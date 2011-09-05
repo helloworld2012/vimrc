@@ -1,0 +1,7 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/media/common/dev/nginx-0.9.3'
+let g:netrw_dirhist_2='/media/common/dev/nginx-0.9.3/src'
+let g:netrw_dirhist_3='/media/common/dev/nginx-0.9.3/src/core'
+let g:netrw_dirhist_4='/media/common/dev/nginx-0.9.3/src'
+let g:netrw_dirhist_5='/home/wy/common/dev/git/t'
