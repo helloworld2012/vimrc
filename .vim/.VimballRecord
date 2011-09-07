@@ -1,1 +1,2 @@
 supertab.vba: call delete('/home/wy/.vim/doc/supertab.txt')|call delete('/home/wy/.vim/plugin/supertab.vim')
+mark.vba: call delete('/home/wy/.vim/autoload/mark.vim')|call delete('/home/wy/.vim/plugin/mark.vim')|call delete('/home/wy/.vim/doc/mark.txt')

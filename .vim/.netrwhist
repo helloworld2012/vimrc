@@ -1,7 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_cnt =8
 let g:netrw_dirhist_1='/media/common/dev/nginx-0.9.3'
 let g:netrw_dirhist_2='/media/common/dev/nginx-0.9.3/src'
 let g:netrw_dirhist_3='/media/common/dev/nginx-0.9.3/src/core'
 let g:netrw_dirhist_4='/media/common/dev/nginx-0.9.3/src'
-let g:netrw_dirhist_5='/home/wy/common/dev/git/t'
+let g:netrw_dirhist_5='/home/wy/work/highway/src/dec'
+let g:netrw_dirhist_6='/home/wy/.vim/plugin'
+let g:netrw_dirhist_7='/var/lib/lmbench/results'
+let g:netrw_dirhist_8='/var/lib/lmbench/results/i686-pc-linux-gnu'

@@ -33,7 +33,18 @@ elseif has("unix")
     "When .vimrc is edited, reload it
     autocmd! bufwritepost vimrc source ~/.vimrc
 endif
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Toggle Menu and Toolbar
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set guioptions-=m
+set guioptions-=T
+map <silent> <leader>t :if &guioptions =~# 'T' <Bar>
+        \set guioptions-=T <Bar>
+        \set guioptions-=m <bar>
+    \else <Bar>
+        \set guioptions+=T <Bar>
+        \set guioptions+=m <Bar>
+    \endif<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " insert to normal
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -48,8 +59,8 @@ inoremap <C-c>  <ESC>`^
 map <silent> <leader><cr> :noh<cr>
 " Do :help cope if you are unsure what cope is. It's super useful!
 map <leader>cc :botright cope<cr>
-map <leader>n :cn<cr>
-map <leader>p :cp<cr>
+map <leader>cn <ESC> :cn<cr>
+map <leader>cp <ESC> :cp<cr>
 autocmd FileType c,cpp  map <buffer> <leader><space> :w<cr>:make<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -89,6 +100,7 @@ set tm=500
 
 "Highlight current
 set cursorline
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -173,8 +185,8 @@ vnoremap <silent> * :call VisualSearch('f')<cr>
 vnoremap <silent> # :call VisualSearch('b')<cr>
 
 " When you press gv you vimgrep after the selected text
-vnoremap <silent> gv :call VisualSearch('gv')<cr>
-map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
+"vnoremap <silent> gv :call VisualSearch('gv')<cr>
+"map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
 
 
 function! CmdLine(str)
@@ -245,8 +257,8 @@ map <leader>bd :Bclose<cr>
 map <leader>ba :1,300 bd!<cr>
 
 " Use the arrows to something usefull
-map <right> :bn<cr>
-map <left> :bp<cr>
+map <C-right> :bn<cr>
+map <C-left> :bp<cr>
 
 " Tab configuration
 map <leader>tn :tabnew<cr>
@@ -327,21 +339,21 @@ set guitablabel=%t
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Parenthesis/bracket expanding
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-vnoremap $1 <esc>`>a)<esc>`<i(<esc>
-vnoremap $2 <esc>`>a]<esc>`<i[<esc>
-vnoremap $3 <esc>`>a}<esc>`<i{<esc>
-vnoremap $$ <esc>`>a"<esc>`<i"<esc>
-vnoremap $q <esc>`>a'<esc>`<i'<esc>
-vnoremap $e <esc>`>a"<esc>`<i"<esc>
+"vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+"vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+"vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+"vnoremap $$ <esc>`>a"<esc>`<i"<esc>
+"vnoremap $q <esc>`>a'<esc>`<i'<esc>
+"vnoremap $e <esc>`>a"<esc>`<i"<esc>
 
-" Map auto complete of (, ", ', [
-inoremap $1 ()<esc>i
-inoremap $2 []<esc>i
-inoremap $3 {}<esc>i
-inoremap $4 {<esc>o}<esc>O
-inoremap $q ''<esc>i
-inoremap $e ""<esc>i
-inoremap $t <><esc>i
+"" Map auto complete of (, ", ', [
+"inoremap $1 ()<esc>i
+"inoremap $2 []<esc>i
+"inoremap $3 {}<esc>i
+"inoremap $4 {<esc>o}<esc>O
+"inoremap $q ''<esc>i
+"inoremap $e ""<esc>i
+"inoremap $t <><esc>i
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Abbrevs
@@ -356,7 +368,7 @@ iab iname Yun Wang
 " => MISC
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remove the Windows ^M - when the encodings gets messed up
-noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+"noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 "Quickly open a buffer for scripbble
 map <leader>q :e ~/buffer<cr>
@@ -608,6 +620,29 @@ let g:xptemplate_key = '<Tab>'
 "let c_ansi_typedefs = 1
 "let c_ansi_constants = 1
 "let c_impl_defined = 1
+"""""""""""""""""""""""""""""""""
+nmap <leader>co :QFix<CR>
+nmap <leader>ct :call QFixToggle(1)<CR>
+command! -bang -nargs=? QFix call QFixToggle(<bang>0)
+ 
+function! QFixToggle(forced)
+    if exists("g:qfix_win") && a:forced != 0
+        cclose
+    else
+        if exists("g:my_quickfix_win_height")
+            execute "copen ".g:my_quickfix_win_height
+        else
+            copen
+        endif
+    endif
+endfunction
+ 
+augroup QFixToggle
+    autocmd!
+    autocmd BufWinEnter quickfix let g:qfix_win = bufnr("$")
+    autocmd BufWinLeave * if exists("g:qfix_win") && expand("<abuf>") == g:qfix_win | unlet! g:qfix_win | endif
+augroup END
+"
 """"""""""""""""""""""""""""""
 " => Python section
 """"""""""""""""""""""""""""""
@@ -626,4 +661,13 @@ au FileType python map <buffer> <leader>2 /def
 au FileType python map <buffer> <leader>C ?class
 au FileType python map <buffer> <leader>D ?def
 
+" my script func
+vmap <leader><F3> y/<C-R>"<CR>
+vmap <silent> <F3> y :grep -Inr '\<<C-R>"\>' *.c *.cpp *.h <CR><CR>:copen<CR>
+""vmap <silent> <F3> y :!find . -name '*.[ch]' -o -name '*.cpp' | !xargs grep -InR "<C-R>""  <CR><CR>:copen<CR>
+let g:vimrc_author='yun wang'
+let g:vimrc_email='wangy@szreach.com'
+let g:vimrc_homepage='www.szreach.com'
+
+nmap <F4> :AuthorInfoDetect<cr>
 "end
